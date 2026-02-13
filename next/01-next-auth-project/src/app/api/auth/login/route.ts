@@ -1,7 +1,8 @@
-import { connectDB } from "@/lib/db";
-import User from "@/models/User";
+import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import User from "@/models/User";
+import { connectDB } from "@/lib/db";
 
 export async function POST(req: Request) {
   await connectDB();
@@ -11,27 +12,32 @@ export async function POST(req: Request) {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return Response.json({ message: "Invalid credentials" }, { status: 400 });
+    return NextResponse.json(
+      { message: "Invalid credentials" },
+      { status: 400 }
+    );
   }
 
-  const valid = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user.password);
 
-  if (!valid) {
-    return Response.json({ message: "Invalid credentials" }, { status: 400 });
+  if (!isMatch) {
+    return NextResponse.json(
+      { message: "Invalid credentials" },
+      { status: 400 }
+    );
   }
 
   const token = jwt.sign(
     { id: user._id, email: user.email },
-    process.env.JWT_SECRET!,
+    process.env.JWT_SECRET as string,
     { expiresIn: "1d" }
   );
 
-  const response = Response.json({ message: "Login success" });
+  const response = NextResponse.json({ message: "Login successful" });
 
-  response.headers.set(
-    "Set-Cookie",
-    `token=${token}; HttpOnly; Path=/; Max-Age=86400`
-  );
+  response.cookies.set("token", token, {
+    httpOnly: true,
+  });
 
   return response;
 }

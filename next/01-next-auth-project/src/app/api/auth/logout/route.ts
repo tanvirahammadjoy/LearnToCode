@@ -1,10 +1,12 @@
-export async function POST() {
-  const response = Response.json({ message: "Logged out" });
+import { NextResponse } from "next/server";
 
-  response.headers.set(
-    "Set-Cookie",
-    "token=; HttpOnly; Path=/; Max-Age=0"
-  );
+export async function POST() {
+  const response = NextResponse.json({ message: "Logged out" });
+
+  response.cookies.set("token", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
 
   return response;
 }
