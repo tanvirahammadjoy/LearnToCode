@@ -21,8 +21,8 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center mt-10">
-      <form onSubmit={handleSubmit} className="bg-gray-100 p-6 rounded">
+    <div className="flex justify-center text-black mt-10">
+      <form onSubmit={handleSubmit} className="bg-gray-100 w-96 h-96 p-6 text-black rounded">
         <h2 className="text-xl mb-4">Register</h2>
 
         <input
@@ -53,6 +53,7 @@ export default function Register() {
         <button className="bg-blue-500 text-white p-2">
           Register
         </button>
+        <p>Already have an account? <a href="/login" className="text-blue-500">Login</a></p>
       </form>
     </div>
   );

@@ -20,8 +20,8 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center mt-10">
-      <form onSubmit={handleSubmit} className="bg-gray-100 p-6 rounded">
+    <div className="flex justify-center text-black mt-10">
+      <form onSubmit={handleSubmit} className="bg-gray-100 p-6 text-black rounded">
         <h2 className="text-xl mb-4">Login</h2>
 
         <input
@@ -44,6 +44,7 @@ export default function Login() {
         <button className="bg-green-500 text-white p-2">
           Login
         </button>
+        <p>Don&apos;t have an account? <a href="/register" className="text-blue-500">Register</a></p>
       </form>
     </div>
   );
