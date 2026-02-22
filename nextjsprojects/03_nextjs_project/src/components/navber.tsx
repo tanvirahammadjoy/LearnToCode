@@ -3,12 +3,12 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <div>
-      <h1>Navbar</h1>
+    <div className="w-full rounded-lg bg-gray-200 text-black p-4 shadow-lg">
+      <h1 className="text-xl font-bold">My App</h1>
       <hr />
-      <div>
+      <div className="mt-4">
         <nav>
-          <ul>
+          <ul className="flex space-x-4">
             <li>
               <Link href="/dashboard">Dashboard</Link>
             </li>
