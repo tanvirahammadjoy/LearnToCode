@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Navbar() {
   return (
     <div className="w-full rounded-lg bg-gray-200 text-black p-4 shadow-lg">
-      <h1 className="text-xl font-bold">My App</h1>
+      <h1 className="text-xl font-bold"><Link href="/">Home</Link></h1>
       <hr />
       <div className="mt-4">
         <nav>
