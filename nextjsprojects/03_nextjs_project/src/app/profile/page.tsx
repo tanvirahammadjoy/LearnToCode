@@ -2,16 +2,15 @@
 
 import { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function Profile() {
-  const router = useRouter();
-  const [user, setUser] = useState<{name?: string, email?: string} | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  // const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await axios.get("/api/users/");
+      const response = await axios.get("/api/users/me");
       setUser(response.data);
     };
     getUser();

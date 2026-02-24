@@ -4,27 +4,21 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-export async function POST(request: Request, res: NextResponse) {
-  await connectDB();
-
-  if (request.method !== "POST") {
-    return NextResponse.json(
-      { message: "Method not allowed" },
-      { status: 405 },
-    );
-  }
-
-  const { email, password } = await request.json();
-
-  if (!email || !password) {
-    return NextResponse.json(
-      { message: "Email and password are required" },
-      { status: 400 },
-    );
-  }
-
+export async function POST(request: Request) {
   try {
-    const user = await User.findOne({ email });
+    await connectDB();
+
+    const { email, password } = await request.json();
+
+    if (!email || !password) {
+      return NextResponse.json(
+        { message: "Email and password are required" },
+        { status: 400 },
+      );
+    }
+
+    const user = await User.findOne({ email }).select("+password");
+
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 401 });
     }
@@ -42,8 +36,24 @@ export async function POST(request: Request, res: NextResponse) {
       expiresIn: "1h",
     });
 
-    return NextResponse.json({ token }, { status: 200 });
+    // 👇 Create response
+    const response = NextResponse.json(
+      { message: "Login successful" },
+      { status: 200 },
+    );
+
+    // 👇 Set HTTP-only cookie
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 60, // 1 hour
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
+    console.error("LOGIN ERROR:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 },
