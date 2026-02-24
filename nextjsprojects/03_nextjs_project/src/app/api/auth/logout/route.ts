@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
 
-export default async function handler(
+export async function POST(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {

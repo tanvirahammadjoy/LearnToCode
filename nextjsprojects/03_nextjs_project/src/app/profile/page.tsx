@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function Profile() {
@@ -9,11 +11,11 @@ export default function Profile() {
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await axios.get("/api/users/" + router.query.id);
+      const response = await axios.get("/api/users/");
       setUser(response.data);
     };
     getUser();
-  }, [router.query.id]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center">

@@ -1,20 +1,20 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export async function POST(request: Request) {
   await connectDB();
-  if (req.method === "POST") {
-    const { name, email, password } = req.body;
+  if (request.method === "POST") {
+    const { name, email, password } = await request.json();
 
     try {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
-        return res.status(400).json({ message: "User already exists" });
+        return NextResponse.json(
+          { message: "User already exists" },
+          { status: 400 },
+        );
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,11 +24,17 @@ export default async function handler(
         password: hashedPassword,
       });
 
-      res.status(201).json({ message: "User registered successfully" });
+      return NextResponse.json(
+        { message: "User registered successfully" },
+        { status: 201 },
+      );
     } catch (error) {
-      res.status(500).json({ message: "Server error" });
+      return NextResponse.json({ message: "Server error" }, { status: 500 });
     }
   } else {
-    res.status(405).json({ message: "Method not allowed" });
+    return NextResponse.json(
+      { message: "Method not allowed" },
+      { status: 405 },
+    );
   }
 }
