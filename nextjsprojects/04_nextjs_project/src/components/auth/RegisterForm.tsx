@@ -50,6 +50,12 @@ export default function RegisterForm() {
       />
 
       <button className="w-full bg-black text-white p-2">Register</button>
+      <p className="text-sm text-gray-600">
+        Already have an account?{" "}
+        <a href="/auth/login" className="text-blue-500">
+          Login
+        </a>
+      </p>
     </form>
   );
 }

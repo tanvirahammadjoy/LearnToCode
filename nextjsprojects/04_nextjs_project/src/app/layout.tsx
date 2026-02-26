@@ -1,6 +1,5 @@
 import "./globals.css";
 import SessionProviderWrapper from "@/components/providers/SessionProvider";
-import Navbar from "@/components/auth/Navbar";
 
 export default function RootLayout({
   children,
@@ -10,7 +9,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
         <SessionProviderWrapper>{children}</SessionProviderWrapper>
       </body>
     </html>

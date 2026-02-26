@@ -46,6 +46,13 @@ export default function LoginForm() {
       />
 
       <button className="w-full bg-black text-white p-2">Login</button>
+
+      <p className="text-sm text-gray-600">
+        Don&apos;t have an account?{" "}
+        <a href="/auth/register" className="text-blue-500">
+          Register
+        </a>
+      </p>
     </form>
   );
 }
