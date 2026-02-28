@@ -20,7 +20,7 @@ export default function RegisterForm() {
     });
 
     if (res.ok) {
-      router.push("/login");
+      router.push("/auth/login");
     } else {
       alert("Registration failed");
     }
