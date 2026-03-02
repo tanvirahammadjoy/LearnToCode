@@ -1,0 +1,1 @@
+print("hello python bismillah hir rahmanir rahim")

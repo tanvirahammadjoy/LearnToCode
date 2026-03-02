@@ -1,0 +1,71 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+export default function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const handleRegister = async () => {
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      router.push("/login");
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <main className="w-full rounded-lg bg-white text-black p-10 shadow-lg">
+        <h1 className="mb-4 text-2xl font-bold">Register</h1>
+        <input
+          type="text"
+          placeholder="Name"
+          className="mb-4 w-full rounded border p-2"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          className="mb-4 w-full rounded border p-2"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="mb-4 w-full rounded border p-2"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          onClick={handleRegister}
+          className="mt-4 w-full rounded bg-blue-500 p-2 text-white"
+        >
+          Register
+        </button>
+        <Link
+          href="/login"
+          className="mt-4 block text-center text-blue-500 underline"
+        >
+          Already have an account? Login
+        </Link>
+      </main>
+    </div>
+  );
+}

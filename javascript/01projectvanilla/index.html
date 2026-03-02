@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bulb project</title>
+</head>
+<body>
+    <div id="container">
+        <h1>Bulb Project</h1>
+        <div id="bulb" style="width:100px; height:150px; background-color:yellow; margin:20px auto; border-radius:50px 50px 20px 20px;"></div>
+        <button id="toggleButton" style="display:block; margin:0 auto;">Toggle Bulb</button>
+
+        <script>
+            const bulb = document.getElementById('bulb');
+            const button = document.getElementById('toggleButton');
+            let isOn = true;
+
+            button.addEventListener('click', () => {
+                if (isOn) {
+                    bulb.style.backgroundColor = 'gray';
+                } else {
+                    bulb.style.backgroundColor = 'yellow';
+                }
+                isOn = !isOn;
+            });
+        </script>
+    </div>
+</body>
+</html>
