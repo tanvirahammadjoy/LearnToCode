@@ -15,6 +15,7 @@ Auth is about trust boundaries.
 Authentication system usually handles:
 
 #### ✅ Registration
+- Is data present?
 - Validate input
 - Hash password
 - Save user

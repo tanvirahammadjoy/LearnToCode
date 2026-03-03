@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,39 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <div className="flex w-full items-center justify-between font-mono text-sm lg:flex bg-gray-500 p-4 rounded-lg shadow-md">
+          <p className="text-white">
+            <Link href="/">Home</Link>
+          </p>
+          <nav>
+            <ul className="flex space-x-4">
+              <li>
+                <Link href="/register" className="hover:text-blue-500">
+                  Register
+                </Link>
+              </li>
+              <li>
+                <Link href="/login" className="hover:text-blue-500">
+                  Login
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
         {children}
+        <footer className="flex h-24 w-full items-center justify-center border-t">
+          <a
+            className="flex items-center justify-center gap-2"
+            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Powered by{" "}
+            <span className="h-4">
+              <img src="/vercel.svg" alt="Vercel Logo" className="h-full" />
+            </span>
+          </a>
+        </footer>
       </body>
     </html>
   );
