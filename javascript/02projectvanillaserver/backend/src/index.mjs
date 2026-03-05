@@ -10,6 +10,8 @@ const server = http.createServer((req, res) => {
       <h1>Welcome to the Vanilla Server</h1>
       <form method="POST" action="/">
         <input type="text" name="data" placeholder="Enter some data"/>
+        <br/>
+        <input type="email" name="email" placeholder="Enter your email"/>
         <button type="submit">Submit</button>
       </form>
     `);
@@ -31,14 +33,21 @@ const server = http.createServer((req, res) => {
 
       console.log("Raw Data:", parsedBody);
 
-      // convert "data=hello" → "hello"
-      const value = parsedBody.split("=")[1];
+      // convert "data=hello&email=test@example.com" → "hello"
+      const value = parsedBody.split("&")[0].split("=")[1];
+
+      // convert "email=test@example.com" → "test@example.com"
+      const email = parsedBody.split("&")[1].split("=")[1];
+
+      console.log("Parsed Data:", value);
+      console.log("Parsed Email:", email);
 
       res.writeHead(200, { "Content-Type": "text/html" });
 
       res.write(`
         <h1>Data Received</h1>
         <p>Your Data: ${value}</p>
+        <p>Your Email: ${email}</p>
         <a href="/">Go Back</a>
       `);
 
