@@ -1,0 +1,6 @@
+# See https://help.github.com/en/articles/ignoring-files-in-your-repository
+node_modules
+.env
+dist
+build
+coverage
