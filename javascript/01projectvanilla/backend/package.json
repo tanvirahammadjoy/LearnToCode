@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "tanbir",
+  "type": "module",
+  "main": "./src/server.mjs",
+  "scripts": {
+    "test": "node src/server.mjs",
+    "start": "node src/server.mjs",
+    "dev": "nodemon src/server.mjs"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
