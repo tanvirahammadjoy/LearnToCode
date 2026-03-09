@@ -1,0 +1,1 @@
+# A good backend engineer does not start coding immediately. Before starting a project, there are several thinking steps. These steps help avoid messy code and bad architecture later. 🚀
