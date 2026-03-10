@@ -51,6 +51,11 @@ export async function refresh(req, res) {
   try {
     const token = await authService.refresh(req.body.token);
 
+    res.setCookie("refreshToken", token.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    });
     res.status(200).json({
       token,
     });
