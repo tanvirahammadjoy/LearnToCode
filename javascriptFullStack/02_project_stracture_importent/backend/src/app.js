@@ -1,9 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
-dotenv.config({ path: ".env" });
+dotenv.config({ path: [".env", ".env.local", "../.env"] });
 
 // Import routes
-import authrouts from "./routes/auth.routes.js";
+import authrouts from "./routes/auth.route.js";
 
 // Initialize Express application
 // Create an Express application
