@@ -6,7 +6,11 @@ export async function register(req, res) {
 
     res.status(201).json({
       message: "User created",
-      user,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
     res.status(400).json({
@@ -58,5 +62,7 @@ export async function refresh(req, res) {
 }
 
 export async function me(req, res) {
-  res.status(200).json(req.user);
+  const user = await authService.me(req.user.id);
+
+  res.json(user);
 }

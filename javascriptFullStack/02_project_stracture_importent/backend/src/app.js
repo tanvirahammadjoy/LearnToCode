@@ -1,6 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config({ path: [".env", ".env.local", "../.env"] });
 
 // Import routes
 import authrouts from "./routes/auth.route.js";
