@@ -2,8 +2,6 @@ import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "secret";
-
 export default {
   async register(data) {
     const { name, email, password } = data;
@@ -27,9 +25,12 @@ export default {
   },
 
   async login(data) {
+    const JWT_SECRET = process.env.JWT_SECRET;
+    console.log(JWT_SECRET);
     const { email, password } = data;
 
-    const user = await User.findByEmail(email);
+    // const user = await User.findByEmail(email);
+    const user = await User.findOne({ email });
 
     if (!user) {
       throw new Error("Invalid credentials");
@@ -41,10 +42,21 @@ export default {
       throw new Error("Invalid credentials");
     }
 
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET);
+
+    user.refreshToken = token;
+    await user.save();
 
     return token;
+  },
+
+  async logout(userId) {
+    const user = await User.findById(userId);
+
+    if (!user) throw new Error("User not found");
+
+    user.refreshToken = null;
+
+    await user.save();
   },
 };

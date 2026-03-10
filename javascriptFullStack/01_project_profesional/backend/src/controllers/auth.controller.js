@@ -32,3 +32,17 @@ export async function login(req, res) {
 export async function me(req, res) {
   res.json(req.user);
 }
+
+export async function logout(req, res) {
+  try {
+    await authService.logout(req.user.id);
+
+    res.json({
+      message: "Logout successful",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+}
