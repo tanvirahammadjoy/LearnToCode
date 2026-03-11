@@ -1,6 +1,19 @@
 # A good backend engineer does not start coding immediately. Before starting a project, there are several thinking steps. These steps help avoid messy code and bad architecture later. 🚀
 
 ### Let’s walk through the modern workflow developers follow before starting a project.
+```
+my stack
+Only these tools:
+JavaScript
+Node.js
+Express
+PostgreSQL + neon orm
+Mongodb + mongoose
+Git
+Docker (later)
+
+Nothing else.
+```
 
 ### 1️⃣ Understand the Problem First
 ##### Before writing any code, ask:
