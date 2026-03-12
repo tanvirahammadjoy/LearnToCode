@@ -1,3 +1,4 @@
+// javascriptFullStack/03_project_auth_system/backend/src/utils/generateToken.js
 import jwt from "jsonwebtoken";
 
 // Generate access token for user authentication

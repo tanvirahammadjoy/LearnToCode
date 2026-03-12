@@ -1,3 +1,4 @@
+// javascriptFullStack/03_project_auth_system/backend/src/models/user.model.js
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(

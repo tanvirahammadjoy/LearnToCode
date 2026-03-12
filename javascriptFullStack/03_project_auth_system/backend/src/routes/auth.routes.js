@@ -1,3 +1,4 @@
+// javascriptFullStack/03_project_auth_system/backend/src/routes/auth.routes.js
 import express from "express";
 import {
   registerUser,

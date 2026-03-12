@@ -1,3 +1,4 @@
+// javascriptFullStack/03_project_auth_system/backend/src/utils/hashPassword.js
 import bcrypt from "bcryptjs";
 
 export const hashPassword = async (password) => {

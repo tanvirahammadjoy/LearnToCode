@@ -1,3 +1,4 @@
+// javascriptFullStack/03_project_auth_system/backend/src/controllers/auth.controller.js
 import {
   registerUserService,
   loginUserService,

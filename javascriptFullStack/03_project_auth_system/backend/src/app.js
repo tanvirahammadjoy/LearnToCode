@@ -1,3 +1,4 @@
+// javascriptFullStack/03_project_auth_system/backend/src/app.js
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";

@@ -1,3 +1,4 @@
+// javascriptFullStack/03_project_auth_system/backend/src/middlewares/auth.middleware.js
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
