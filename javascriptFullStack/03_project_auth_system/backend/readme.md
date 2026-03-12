@@ -243,3 +243,326 @@ Feel free to fork this repository and improve the project.
 # 📜 License
 
 This project is open source and available under the MIT License.
+
+---
+
+# We’ll implement a clean Node.js authentication backend with:
+
+- Node.js
+- Express
+- MongoDB + Mongoose
+- JWT authentication
+- bcrypt password hashing
+- dotenv
+
+This will be a solid beginner → intermediate backend architecture.
+
+## 1️⃣ Install Dependencies
+
+First initialize the project.
+
+```
+npm init -y
+```
+
+Install dependencies:
+
+```
+npm install express mongoose bcryptjs jsonwebtoken dotenv cors
+```
+
+Dev dependency:
+
+```
+npm install nodemon --save-dev
+```
+
+Update package.json:
+
+```
+"scripts": {
+ "dev": "nodemon src/server.js"
+}
+```
+
+## 2️⃣ .env
+
+```
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/auth-system
+JWT_SECRET=supersecretkey
+```
+
+## 3️⃣ src/server.js
+
+Server entry point.
+
+```
+import app from "./app.js";
+import connectDB from "./config/db.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const PORT = process.env.PORT || 5000;
+
+connectDB();
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+## 4️⃣ src/app.js
+
+Main express configuration.
+
+```
+import express from "express";
+import cors from "cors";
+import authRoutes from "./routes/auth.routes.js";
+import errorMiddleware from "./middleware/error.middleware.js";
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use("/api/auth", authRoutes);
+
+app.use(errorMiddleware);
+
+export default app;
+```
+
+## 5️⃣ src/config/db.js
+
+MongoDB connection.
+
+```
+import mongoose from "mongoose";
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("DB connection failed", error);
+    process.exit(1);
+  }
+};
+
+export default connectDB;
+```
+
+## 6️⃣ src/models/user.model.js
+
+User schema.
+
+```
+import mongoose from "mongoose";
+
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    password: {
+      type: String,
+      required: true
+    }
+  },
+  { timestamps: true }
+);
+
+export default mongoose.model("User", userSchema);
+```
+
+---
+
+## 7️⃣ src/utils/hashPassword.js
+
+```
+import bcrypt from "bcryptjs";
+
+export const hashPassword = async (password) => {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
+};
+
+export const comparePassword = async (password, hashedPassword) => {
+  return bcrypt.compare(password, hashedPassword);
+};
+```
+
+## 8️⃣ src/utils/generateToken.js
+
+```
+import jwt from "jsonwebtoken";
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "1d"
+  });
+};
+
+export default generateToken;
+```
+
+---
+
+## 9️⃣ src/services/auth.service.js
+
+Business logic.
+
+```
+import User from "../models/user.model.js";
+import { hashPassword, comparePassword } from "../utils/hashPassword.js";
+
+export const registerUserService = async ({ name, email, password }) => {
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    throw new Error("User already exists");
+  }
+
+  const hashed = await hashPassword(password);
+
+  const user = await User.create({
+    name,
+    email,
+    password: hashed
+  });
+
+  return user;
+};
+
+export const loginUserService = async ({ email, password }) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error("Invalid credentials");
+  }
+
+  const match = await comparePassword(password, user.password);
+
+  if (!match) {
+    throw new Error("Invalid credentials");
+  }
+
+  return user;
+};
+```
+
+## 🔟 src/controllers/auth.controller.js
+
+```
+import generateToken from "../utils/generateToken.js";
+import {
+  registerUserService,
+  loginUserService
+} from "../services/auth.service.js";
+
+export const registerUser = async (req, res, next) => {
+  try {
+    const user = await registerUserService(req.body);
+
+    res.status(201).json({
+      message: "User registered",
+      token: generateToken(user._id)
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const loginUser = async (req, res, next) => {
+  try {
+    const user = await loginUserService(req.body);
+
+    res.json({
+      message: "Login successful",
+      token: generateToken(user._id)
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+```
+
+## 1️⃣1️⃣ src/routes/auth.routes.js
+
+```
+import express from "express";
+import { registerUser, loginUser } from "../controllers/auth.controller.js";
+
+const router = express.Router();
+
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+
+export default router;
+```
+
+## 1️⃣2️⃣ src/middleware/auth.middleware.js
+
+JWT protection middleware.
+
+```
+import jwt from "jsonwebtoken";
+
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch {
+    res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+export default authMiddleware;
+```
+---
+## 1️⃣3️⃣ src/middleware/error.middleware.js
+Global error handler.
+```
+const errorMiddleware = (err, req, res, next) => {
+  res.status(500).json({
+    message: err.message || "Server Error"
+  });
+};
+
+export default errorMiddleware;
+```
+## 1️⃣4️⃣ Test API
+Run server:
+```
+npm run dev
+```
+Test with Postman or Thunder Client.
+
+### Register
+```
+POST /api/auth/register
+```
+```
+{
+ "email":"tanvir@email.com",
+ "password":"123456"
+}
+```
