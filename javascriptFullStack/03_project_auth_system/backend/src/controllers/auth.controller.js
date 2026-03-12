@@ -13,7 +13,12 @@ export const registerUser = async (req, res, next) => {
 
     res.status(201).json({
       message: "User registered",
-      user,
+      user: {
+        id: user._id,
+        fullName: user.name,
+        userName: user.userName,
+        email: user.email,
+      },
     });
   } catch (error) {
     next(error);
@@ -27,6 +32,11 @@ export const loginUser = async (req, res, next) => {
       req.body,
     );
 
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    });
     res.json({
       message: "Login successful",
       accessToken,
@@ -43,6 +53,11 @@ export const refreshToken = async (req, res, next) => {
   try {
     const { accessToken } = await refreshTokenService(req.body.token);
 
+    res.cookie("refreshToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    });
     res.json({
       accessToken,
     });

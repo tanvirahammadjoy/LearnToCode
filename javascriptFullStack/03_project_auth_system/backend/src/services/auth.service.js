@@ -14,11 +14,7 @@ export const registerUserService = async ({
   email,
   password,
 }) => {
-  if (!fullName || !userName || !email || !password) {
-    throw new Error("All fields are required");
-  }
-
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({ $or: [{email}, {userName}] });
 
   if (userExists) {
     throw new Error("User already exists");

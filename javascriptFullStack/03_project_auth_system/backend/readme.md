@@ -100,11 +100,11 @@ backend-auth-system
 
 # 🔑 Authentication Flow
 
-1. User registers with email & password
+1. User registers with fullName, userName, email & password
 2. Password is **hashed using bcrypt**
 3. User logs in with credentials
-4. Server **generates JWT token**
-5. Client stores the token
+4. Server **generates JWT token** like accessToken & refreshToken
+5. Client stores the tokens
 6. Client sends token in **Authorization header**
 7. Middleware verifies token for protected routes
 
@@ -115,31 +115,39 @@ backend-auth-system
 ### Register User
 
 ```
-POST /api/auth/register
+POST /api/v1/auth/register
 ```
 
 ### Login User
 
 ```
-POST /api/auth/login
+POST /api/v1/auth/login
+```
+### Refresh_Token
+```
+POST /api/v1/auth/refresh_token
+```
+### Logout
+```
+POST /api/v1/auth/logout
 ```
 
 ### Get Profile
 
 ```
-GET /api/auth/profile
+GET /api/v1/auth/profile
 ```
 
 ### Update Profile
 
 ```
-PUT /api/auth/profile
+PUT /api/v1/auth/profile
 ```
 
 ### Delete Account
 
 ```
-DELETE /api/auth/profile
+DELETE /api/v1/auth/profile
 ```
 
 ---
