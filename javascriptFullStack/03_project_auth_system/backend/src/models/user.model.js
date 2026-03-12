@@ -2,21 +2,38 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    fullName: {
       type: String,
-      required: true
+      required: true,
+    },
+    userName: {
+      type: String,
+      required: true,
     },
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin", "superadmin"],
+      default: "user",
+    },
+    refreshToken: {
+      type: String,
+    },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("User", userSchema);
