@@ -111,15 +111,11 @@ backend-auth-system
 ---
 
 # 📡 API Endpoints
-
 ### Register User
-
 ```
 POST /api/v1/auth/register
 ```
-
 ### Login User
-
 ```
 POST /api/v1/auth/login
 ```
@@ -131,29 +127,21 @@ POST /api/v1/auth/refresh_token
 ```
 POST /api/v1/auth/logout
 ```
-
 ### Get Profile
-
 ```
 GET /api/v1/auth/profile
 ```
-
 ### Update Profile
-
 ```
 PUT /api/v1/auth/profile
 ```
-
 ### Delete Account
-
 ```
 DELETE /api/v1/auth/profile
 ```
-
 ---
 
 # ⚠️ Edge Cases to Handle
-
 Good authentication systems must handle edge cases such as:
 
 - Duplicate email registration

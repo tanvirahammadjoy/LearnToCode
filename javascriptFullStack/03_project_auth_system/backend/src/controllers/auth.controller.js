@@ -28,8 +28,16 @@ export const registerUser = async (req, res, next) => {
 // LOGIN
 export const loginUser = async (req, res, next) => {
   try {
-    const { user, accessToken, refreshToken } = await loginUserService(
-      req.body,
+    const { user, accessToken, refreshToken, session } = await loginUserService(
+      {
+        email: req.body.email,
+        password: req.body.password,
+        deviceInfo: {
+          device: req.headers["user-agent"],
+          ip: req.ip,
+          browser: req.headers["user-agent"],
+        },
+      },
     );
 
     res.cookie("refreshToken", refreshToken, {
@@ -39,9 +47,10 @@ export const loginUser = async (req, res, next) => {
     });
     res.json({
       message: "Login successful",
+      user,
       accessToken,
       refreshToken,
-      user,
+      session,
     });
   } catch (error) {
     next(error);
@@ -51,9 +60,18 @@ export const loginUser = async (req, res, next) => {
 // REFRESH TOKEN
 export const refreshToken = async (req, res, next) => {
   try {
-    const { accessToken } = await refreshTokenService(req.body.token);
+    // const { accessToken } = await refreshTokenService(req.body.tokenRefresh);
+    // const { accessToken } = await refreshTokenService(req.body.refreshToken);
+    const { accessToken, refreshToken } = await refreshTokenService(
+      req.cookies.refreshToken,
+      {
+        device: req.headers["user-agent"],
+        ip: req.ip,
+        browser: req.headers["user-agent"],
+      },
+    );
 
-    res.cookie("refreshToken", accessToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: "Strict",
@@ -69,10 +87,8 @@ export const refreshToken = async (req, res, next) => {
 // LOGOUT
 export const logoutUser = async (req, res, next) => {
   try {
-    const userId = req.user._id;
-
-    await logoutUserService(userId);
-
+    await logoutUserService(req.cookies.refreshToken);
+    res.clearCookie("refreshToken");
     res.json({
       message: "Logout successful",
     });

@@ -13,7 +13,7 @@ export const protect = async (req, res, next) => {
       token = authHeader.split(" ")[1];
     }
 
-    console.log(token);
+    console.log("token", token);
 
     if (!token) {
       return res.status(401).json({
@@ -22,6 +22,8 @@ export const protect = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    console.log("decoded", decoded);
 
     const user = await User.findById(decoded.id).select("-password");
 

@@ -19,7 +19,7 @@ const router = express.Router();
 
 router.post("/register", registerValidator(), validate, registerUser);
 router.post("/login", loginValidator(), validate, loginUser);
-router.post("/refresh-token", refreshTokenValidator(), validate, refreshToken);
+router.post("/refresh-token", refreshToken);
 router.post("/logout", logoutValidators(), validate, protect, logoutUser);
 
 export default router;
